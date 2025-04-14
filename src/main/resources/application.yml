@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: ai-postgresql-query-interface
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: llama3.2
+    mcp:
+      client:
+        stdio:
+          connection-id: server-postgres
+          connections:
+            server-postgres:
+              command: npx.cmd
+              args:
+                - "-y"
+                - "@modelcontextprotocol/server-postgres"
+                - "postgresql://postgres:password@localhost:5432/inventory_db"
+nlq:
+  server-postgres:
+    systemPrompt: |
+      You are a PostgreSQL expert assistant. Follow these instructions:
+        1. Generate accurate SQL queries using the 'query' tool.
+        2. Wait for and process actual PostgreSQL database results.
+        3. Return clean JSON formatted output.
+        4. Provide a concise explanation of the results.
+logging:
+  level:
+    org.springframework.ai: DEBUG
+    org.springframework.ai.mcp: TRACE
